@@ -4,7 +4,7 @@ A modern, responsive website for Rhythm & Sound Band, a premier live music band 
 
 ![Rhythm & Sound Band Website](https://images.unsplash.com/photo-1511192336575-5a79af67a629?q=80&w=1200&auto=format&fit=crop)
 
-## 🌟 Features
+## 🌟 Featuress
 
 ### Core Functionality
 
