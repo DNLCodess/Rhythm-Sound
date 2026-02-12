@@ -1,0 +1,354 @@
+@import "tailwindcss";
+
+/* ================================================================ */
+/* THEME CONFIGURATION                                              */
+/* ================================================================ */
+@theme {
+  /* Default color palette */
+  --color-default-50: #fafafa;
+  --color-default-100: #f5f5f5;
+  --color-default-200: #e5e5e5;
+  --color-default-300: #d4d4d4;
+  --color-default-400: #a3a3a3;
+  --color-default-500: #737373;
+  --color-default-600: #525252;
+  --color-default-700: #404040;
+  --color-default-800: #262626;
+  --color-default-900: #171717;
+
+  /* Primary color palette (Orange) */
+  --color-primary-50: #fff7ed;
+  --color-primary-100: #ffedd5;
+  --color-primary-200: #fed7aa;
+  --color-primary-300: #fdba74;
+  --color-primary-400: #fb923c;
+  --color-primary-500: #f97316;
+  --color-primary-600: #ea580c;
+  --color-primary-700: #c2410c;
+  --color-primary-800: #9a3412;
+  --color-primary-900: #7c2d12;
+  --color-primary: #ea580c;
+
+  /* Additional colors */
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Fonts */
+  --font-family-sans: "REM", ui-sans-serif, system-ui, sans-serif;
+
+  /* Container spacing */
+  --container-padding: 1rem; /* 16px mobile */
+  --container-padding-md: 1.5rem; /* 24px tablet */
+  --container-padding-lg: 2rem; /* 32px desktop */
+  --container-max-width: 1280px; /* max width on large screens */
+}
+
+/* Dark mode theme - using .dark class instead of media query */
+.dark {
+  --color-default-50: #262626;
+  --color-default-100: #1c1c1c;
+  --color-default-200: #404040;
+  --color-default-300: #525252;
+  --color-default-400: #737373;
+  --color-default-500: #a3a3a3;
+  --color-default-600: #d4d4d4;
+  --color-default-700: #e5e5e5;
+  --color-default-800: #f5f5f5;
+  --color-default-900: #fafafa;
+}
+
+/* ================================================================ */
+/* BASE STYLES (from _reboot.css)                                   */
+/* ================================================================ */
+html {
+  @apply relative scroll-smooth;
+}
+
+body {
+  font-size: 15px;
+  @apply overflow-x-hidden text-default-700 antialiased dark:bg-default-100;
+}
+
+/* Custom scrollbar */
+* {
+  @apply lg:[&::-webkit-scrollbar-thumb]:rounded-full 
+         lg:[&::-webkit-scrollbar-thumb]:bg-primary/60 
+         lg:hover:[&::-webkit-scrollbar-thumb]:bg-primary 
+         lg:[&::-webkit-scrollbar-track]:bg-default-200 
+         lg:dark:[&::-webkit-scrollbar-track]:bg-default-50 
+         lg:[&::-webkit-scrollbar]:w-1.5 
+         lg:[&::-webkit-scrollbar]:transition-all 
+         lg:[&::-webkit-scrollbar]:duration-1000;
+}
+
+::selection {
+  @apply bg-primary text-white;
+}
+
+::marker {
+  @apply opacity-40;
+}
+
+input,
+textarea,
+button,
+select,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-semibold;
+}
+
+/* ================================================================ */
+/* CONTAINER CONFIGURATION                                          */
+/* ================================================================ */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-left: var(--container-padding-md);
+    padding-right: var(--container-padding-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-left: var(--container-padding-lg);
+    padding-right: var(--container-padding-lg);
+    max-width: var(--container-max-width);
+  }
+}
+
+/* ================================================================ */
+/* ANIMATIONS                                                       */
+/* ================================================================ */
+
+/* Spin animations */
+@keyframes spin-reverse {
+  to {
+    transform: rotate(-1turn);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+.animate-spin-reverse-slower {
+  animation: spin-reverse 6s linear infinite;
+}
+
+.animate-spin-slow {
+  animation: spin 4s linear infinite;
+}
+
+.animate-spin-slower {
+  animation: spin 6s linear infinite;
+}
+
+/* Marquee animations */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-100% - 2rem));
+  }
+}
+
+@keyframes hero {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(calc(-100% - 2rem));
+  }
+}
+
+.marquee__group {
+  animation: scroll 60s linear infinite;
+}
+
+.marquee--reverse .marquee__group {
+  animation-direction: reverse;
+}
+
+.marquee-hero {
+  animation: hero 60s linear infinite;
+}
+
+.marquee-reverse .marquee-hero {
+  animation-direction: reverse;
+}
+
+/* Bounce animation */
+@keyframes moveLeftBounce {
+  0%,
+  100% {
+    transform: translateX(0px);
+  }
+  50% {
+    transform: translateX(20px);
+  }
+}
+
+/* ================================================================ */
+/* GALLERY STYLES (from _gallery.css)                               */
+/* ================================================================ */
+.filter-options a {
+  @apply rounded-md border border-default-200 bg-white px-5 py-2 
+         font-medium text-default-900 transition-all duration-500 
+         dark:bg-default-50;
+}
+
+.filter-options a:hover,
+.filter-options .active,
+.filter-options a:active {
+  @apply !border-primary !bg-primary !text-white !shadow-primary/50;
+}
+
+/* ================================================================ */
+/* SWIPER STYLES (from _swiper.css)                                 */
+/* ================================================================ */
+.swiper-slide {
+  height: 100%;
+  width: 100%;
+}
+
+.swiper-button-prev svg,
+.swiper-button-next svg {
+  width: auto;
+  height: auto;
+}
+
+.swiper-1 {
+  height: 450px;
+  width: auto;
+}
+
+.swiper-pagination-bullets-dynamic {
+  @apply py-1;
+}
+
+/* Auth swiper pagination */
+.auth-swiper .swiper-pagination .swiper-pagination-bullet {
+  @apply h-1.5 w-4 rounded-sm bg-white opacity-50;
+}
+
+.auth-swiper
+  .swiper-pagination
+  .swiper-pagination-bullet.swiper-pagination-bullet-active {
+  @apply bg-primary ring-2 ring-primary ring-offset-2 ring-offset-default-50;
+}
+
+/* Testimonials swiper pagination */
+.testimonials_swiper .swiper-pagination .swiper-pagination-bullet {
+  @apply h-1.5 w-4 rounded-sm bg-primary;
+}
+
+.testimonials_swiper
+  .swiper-pagination
+  .swiper-pagination-bullet.swiper-pagination-bullet-active {
+  @apply ring-2 ring-primary ring-offset-2 ring-offset-default-50;
+}
+
+/* ================================================================ */
+/* APEXCHARTS STYLES (from _apexcharts.css)                         */
+/* ================================================================ */
+.apex-charts {
+  min-height: 10px !important;
+}
+
+.apexcharts-canvas {
+  margin: 0 auto;
+}
+
+.apexcharts-canvas .apexcharts-text.apexcharts-xaxis-label,
+.apexcharts-canvas .apexcharts-text.apexcharts-yaxis-label,
+.apexcharts-canvas .apexcharts-title-text {
+  @apply bg-default-50 fill-default-900;
+}
+
+.apexcharts-canvas .apexcharts-tooltip.apexcharts-theme-light,
+.apexcharts-canvas .apexcharts-xaxistooltip.apexcharts-theme-light {
+  @apply border border-default-200 bg-default-50/10 shadow-none backdrop-blur-[100px];
+}
+
+.apexcharts-canvas .apexcharts-xaxistooltip-bottom:after,
+.apexcharts-canvas .apexcharts-xaxistooltip-bottom:before {
+  @apply border-dashed border-b-default-200;
+}
+
+.apexcharts-canvas .apexcharts-tooltip-series-group.apexcharts-active {
+  @apply text-default-50;
+}
+
+.apexcharts-canvas
+  .apexcharts-tooltip.apexcharts-theme-light
+  .apexcharts-tooltip-title {
+  @apply border-dashed border-default-300 bg-default-200/10 backdrop-blur-[100px];
+}
+
+.apexcharts-gridline {
+  @apply stroke-default-200;
+}
+
+.apexcharts-legend-series {
+  @apply font-semibold;
+}
+
+.apexcharts-legend-text {
+  @apply text-default-300;
+  font-size: 13px !important;
+  vertical-align: middle;
+}
+
+.apexcharts-legend-marker {
+  vertical-align: middle;
+  margin-right: 5px !important;
+}
+
+.apexcharts-pie-label {
+  @apply fill-white;
+}
+
+.apexcharts-text.apexcharts-yaxis-title-text {
+  @apply fill-default-600;
+}
+
+.apex-charts text,
+.apexcharts-tooltip-title,
+.apexcharts-tooltip-text,
+.apexcharts-xaxistooltip-text,
+.apexcharts-yaxis .text,
+.apexcharts-xaxis .text,
+.apexcharts-datalabels text,
+.apexcharts-title-text,
+.apexcharts-legend-text,
+.apexcharts-subtitle-text,
+.apexcharts-tooltip {
+  font-family: var(--font-family-sans) !important;
+  @apply !font-medium !text-default-900;
+}
+
+/* ================================================================ */
+/* UTILITY CLASSES                                                  */
+/* ================================================================ */
+.cursor-pointer {
+  cursor: pointer;
+}
