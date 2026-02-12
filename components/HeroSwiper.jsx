@@ -58,7 +58,7 @@ const HeroSwiper = () => {
       id="home"
       className="min-h-screen bg-[url('/assets/images/other/bg-lines-2.png')] bg-cover bg-no-repeat dark:bg-[url('/assets/images/other/bg-lines-2-dark.png')]"
     >
-      <div className="grid grid-cols-1 items-start gap-6 xl:grid-cols-5 xl:min-h-screen">
+      <div className="grid grid-cols-1 items-start xl:grid-cols-5 xl:min-h-screen">
         {/* LEFT: IMAGE SWIPER */}
         <div className="xl:col-span-3 h-105 md:h-130 xl:h-screen">
           <Swiper
@@ -88,7 +88,7 @@ const HeroSwiper = () => {
         </div>
 
         {/* RIGHT: TEXT SWIPER */}
-        <div className="relative p-6 xl:col-span-2 xl:p-10 xl:py-20">
+        <div className="relative p-6 xl:col-span-2 xl:px-10 xl:py-16">
           <Swiper
             speed={1000}
             spaceBetween={10}
