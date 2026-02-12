@@ -13,6 +13,7 @@ const TopNavBar = ({ menuItems, position }) => {
   const pathname = usePathname();
   const [activation, setActivation] = useState(menuItems[0]);
   const [hash, setHash] = useState("");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Scroll listener & sticky nav
   useEffect(() => {
@@ -42,6 +43,19 @@ const TopNavBar = ({ menuItems, position }) => {
     return () => clearTimeout(timeout);
   }, [hash]);
 
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMobileMenuOpen]);
+
   // Update active menu section
   const activeSection = () => {
     const scrollY = window.scrollY;
@@ -54,6 +68,16 @@ const TopNavBar = ({ menuItems, position }) => {
         return;
       }
     }
+  };
+
+  // Toggle mobile menu
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  // Close mobile menu
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -91,8 +115,9 @@ const TopNavBar = ({ menuItems, position }) => {
                   <LuPhone className="h-4 w-4" />
                 </Link>
                 <button
-                  className="hs-collapse-toggle inline-block lg:hidden"
-                  data-hs-overlay="#mobile-menu"
+                  onClick={toggleMobileMenu}
+                  className="inline-block lg:hidden"
+                  aria-label="Toggle mobile menu"
                 >
                   <LuMenu className="h-7 w-7 text-default-600 hover:text-default-900" />
                 </button>
@@ -139,14 +164,28 @@ const TopNavBar = ({ menuItems, position }) => {
         </div>
       </header>
 
+      {/* Mobile menu overlay backdrop */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-[60] lg:hidden"
+          onClick={closeMobileMenu}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Mobile menu */}
       <div
-        id="mobile-menu"
-        className="hs-overlay fixed bottom-0 left-0 top-0 z-[61] hidden h-screen w-full max-w-[270px] -translate-x-full transform border-r border-default-200 bg-white transition-all [--body-scroll:true] [--overlay-backdrop:false] hs-overlay-open:translate-x-0 dark:bg-default-50"
-        tabIndex={-1}
+        className={cn(
+          "fixed bottom-0 left-0 top-0 z-[61] h-screen w-full max-w-[270px] border-r border-default-200 bg-white transition-transform duration-300 dark:bg-default-50 lg:hidden",
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full",
+        )}
       >
         <div className="flex h-[74px] items-center justify-between border-b border-dashed border-default-200 px-4 transition-all duration-300">
-          <Link href="/" className="flex items-center gap-2">
+          <Link
+            href="/"
+            className="flex items-center gap-2"
+            onClick={closeMobileMenu}
+          >
             <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center">
               <LuMusic2 className="h-6 w-6 text-white" />
             </div>
@@ -157,13 +196,16 @@ const TopNavBar = ({ menuItems, position }) => {
               <p className="text-xs text-default-600">Band</p>
             </div>
           </Link>
-          <div data-hs-overlay="#mobile-menu" className="hs-collapse-toggle">
-            <LuX size={24} />
-          </div>
+          <button onClick={closeMobileMenu} aria-label="Close mobile menu">
+            <LuX
+              size={24}
+              className="text-default-600 hover:text-default-900"
+            />
+          </button>
         </div>
 
-        <div className="h-[calc(100%-4rem)] overflow-y-auto">
-          <nav className="hs-accordion-group flex h-full w-full flex-col flex-wrap p-4">
+        <div className="h-[calc(100%-4.625rem)] overflow-y-auto">
+          <nav className="flex h-full w-full flex-col p-4">
             <ul className="space-y-1">
               {menuItems.map((item, idx) => (
                 <li
@@ -176,7 +218,7 @@ const TopNavBar = ({ menuItems, position }) => {
                   <a
                     className="block w-full px-4 py-2.5"
                     href={`#${item}`}
-                    data-hs-overlay="#mobile-menu"
+                    onClick={closeMobileMenu}
                   >
                     {toSentenceCase(item)}
                   </a>
@@ -189,7 +231,7 @@ const TopNavBar = ({ menuItems, position }) => {
               <Link
                 href="tel:+2348068494766"
                 className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-primary px-6 py-3 text-base font-semibold text-primary transition-all hover:bg-primary hover:text-white"
-                data-hs-overlay="#mobile-menu"
+                onClick={closeMobileMenu}
               >
                 <LuPhone className="h-4 w-4" />
                 <span>Call Us</span>
@@ -197,7 +239,7 @@ const TopNavBar = ({ menuItems, position }) => {
               <Link
                 href="#contact"
                 className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-base font-semibold text-white transition-all hover:bg-primary/90"
-                data-hs-overlay="#mobile-menu"
+                onClick={closeMobileMenu}
               >
                 <span>Book Now</span>
               </Link>
